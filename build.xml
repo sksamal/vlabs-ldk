@@ -1,0 +1,48 @@
+<project name="vlabs-ldk" default="jar" basedir=".">
+    <description>
+        Sample build file
+    </description>
+  <!-- set global properties for this build -->
+  <property name="src" location="src"/>
+  <property name="build" location="build"/>
+  <property name="jar"  location="jar"/>
+  <property name="deploy" location="/u01/src/apache-tomcat-7.0.40/webapps/vlabs/WEB-INF/lib"/>
+  <property name="tomcat" location="/u01/src/apache-tomcat-7.0.40/bin" />
+
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <!-- Create the build directory structure used by compile -->
+    <mkdir dir="${build}"/>
+  </target>
+
+  <target name="compile" depends="init"
+        description="compile the source " >
+    <!-- Compile the java code from ${src} into ${build} -->
+    <javac srcdir="${src}" classpath="lib/servlet-api.jar" destdir="${build}"/>
+  </target>
+
+  <target name="jar" depends="compile"
+        description="generate the distribution" >
+    <!-- Create the distribution directory -->
+    <mkdir dir="${jar}"/>
+
+    <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
+    <jar jarfile="${jar}/vlabs-ldk-${DSTAMP}.jar" basedir="${build}"/>
+  </target>
+
+<target name="deploy" depends="jar"
+        description="delpoy the distrubution" >
+     <!-- move the jar file to tomcat webapps dir -->
+    <delete file="${deploy}/vlabs-ldk*.jar"/>
+    <move file="${jar}/vlabs-ldk-${DSTAMP}.jar" todir="${deploy}" />
+    <exec executable="${tomcat}/shutdown.sh"> </exec>
+    <exec executable="${tomcat}/startup.sh"> </exec>
+  </target>
+ <target name="clean"
+        description="clean up" >
+    <!-- Delete the ${build} and ${dist} directory trees -->
+    <delete dir="${build}"/>
+    <delete dir="${jar}"/>
+  </target>
+</project>
