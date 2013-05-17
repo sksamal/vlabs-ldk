@@ -26,7 +26,7 @@ public final class Vl
       /* Finalize user stuff*/
       session.setAttribute("username","");
       session.setAttribute("acl","");
-      response.sendRedirect("login.jsp");
+      response.sendRedirect("vl_login.jsp");
       return true;
     } 
 
@@ -59,7 +59,7 @@ public final class Vl
     	Object uname=session.getAttribute("username");
     	if(uname==null || uname.toString().equalsIgnoreCase(""))
     	{
-    		response.sendRedirect("login.jsp");
+    		response.sendRedirect("vl_login.jsp");
     		return null;
     	}
     	return uname.toString();
